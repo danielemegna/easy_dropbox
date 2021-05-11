@@ -1,5 +1,7 @@
 defmodule EasyDropbox.Dropbox.Client do
 
+  require Logger
+
   def fetch_ebooks do
     token = refresh_token()
     fetch_ebooks_with(token)
@@ -22,6 +24,7 @@ defmodule EasyDropbox.Dropbox.Client do
         {"Content-Type", "application/json"},
       ]
     )
+    |> log_response()
     |> Map.get(:body)
     |> Jason.decode!()
     |> Map.get("entries")
@@ -44,9 +47,15 @@ defmodule EasyDropbox.Dropbox.Client do
         {"Authorization", "Basic #{Base.encode64(basic_auth_credentials)}"}
       ]
     )
+    |> log_response()
     |> Map.get(:body)
     |> Jason.decode!()
     |> Map.get("access_token")
+  end
+
+  defp log_response(response) do
+    Logger.debug(response)
+    response
   end
 
 end
