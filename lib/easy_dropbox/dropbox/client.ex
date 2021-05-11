@@ -25,6 +25,7 @@ defmodule EasyDropbox.Dropbox.Client do
     |> Map.get(:body)
     |> Jason.decode!()
     |> Map.get("entries")
+    |> Enum.filter(&(Map.get(&1, ".tag") == "file"))
     |> Enum.map(&(Map.take(&1, ["id", "name", "path_display"])))
   end
 
