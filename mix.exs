@@ -33,15 +33,16 @@ defmodule EasyDropbox.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:gettext, "~> 0.11"},
+      {:httpoison, "~> 1.8"},
+      {:jason, "~> 1.2"},
       {:phoenix, "~> 1.5.8"},
       {:phoenix_html, "~> 2.11"},
-      {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:phoenix_live_dashboard, "~> 0.4"},
+      {:phoenix_live_reload, "~> 1.2", only: :dev},
+      {:plug_cowboy, "~> 2.0"},
       {:telemetry_metrics, "~> 0.4"},
       {:telemetry_poller, "~> 0.4"},
-      {:gettext, "~> 0.11"},
-      {:jason, "~> 1.0"},
-      {:plug_cowboy, "~> 2.0"}
     ]
   end
 
@@ -53,7 +54,8 @@ defmodule EasyDropbox.MixProject do
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     [
-      setup: ["deps.get"]
+      setup: ["deps.get"],
+      test: ["test --trace"]
     ]
   end
 end
