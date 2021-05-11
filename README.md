@@ -36,3 +36,21 @@ Run tests
 ```
 # mix test
 ```
+
+## Dropbox app settings
+
+To create dropbox application and grub key and secret: `https://www.dropbox.com/developers/apps`
+
+To grub a refreshable token:
+
+`https://www.dropbox.com/oauth2/authorize?client_id=<app-key>&redirect_uri=http://localhost:4000/receive-token&response_type=code&token_access_type=offline`
+
+and than
+
+```
+curl https://api.dropbox.com/oauth2/token \
+  -d code=<AUTHORIZATION_CODE> \
+  -d grant_type=authorization_code \
+  -d redirect_uri=http://localhost:4000 \
+  -u <APP_KEY>:<APP_SECRET>
+```
