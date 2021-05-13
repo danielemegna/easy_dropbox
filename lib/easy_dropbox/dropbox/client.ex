@@ -4,7 +4,8 @@ defmodule EasyDropbox.Dropbox.Client do
 
   def fetch_ebooks do
     token = refresh_token()
-    fetch_ebooks_with(token)
+    ebooks = fetch_ebooks_with(token)
+    {ebooks, token}
   end
 
   def download_ebook(id) do

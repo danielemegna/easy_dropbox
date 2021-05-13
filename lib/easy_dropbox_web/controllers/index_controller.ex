@@ -2,20 +2,21 @@ defmodule EasyDropboxWeb.IndexController do
   use EasyDropboxWeb, :controller
 
   def index(conn, _params) do
-    ebooks = EasyDropbox.Dropbox.Client.fetch_ebooks()
-    #ebooks = [
-    #  %{
-    #    "id"=> "id:_Tm5Nio06KMAAAAAAAAChw",
-    #    "name"=> "Name here",
-    #    "path_display"=> "/path"
-    #  },
-    #  %{
-    #    "id"=> "wrongid",
-    #    "name"=> "Another here",
-    #    "path_display"=> "/another.path"
-    #  }
-    #]
-    render(conn, "index.html", ebooks: ebooks, authorizationHeader: "Bearer QUI")
+    {ebooks, token} = EasyDropbox.Dropbox.Client.fetch_ebooks()
+    render(
+      conn,
+      "index.html",
+      ebooks: ebooks |> add_encoded_download_arg(),
+      authorizationHeader: "Bearer #{token}"
+    )
+  end
+
+  defp add_encoded_download_arg(ebooks) do
+    ebooks
+    |> Enum.map(fn e ->
+      encoded_download_arg = URI.encode(~s({"path":"#{e["id"]}"}))
+      Map.put(e, "encoded_download_arg", encoded_download_arg)
+    end)
   end
 
   def download(conn, params) do

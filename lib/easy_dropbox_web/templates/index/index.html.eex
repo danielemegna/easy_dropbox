@@ -6,46 +6,15 @@
 <section class="row">
   <article class="column">
     <h2>Here we are:</h2>
-    <form id="download-form" action="https://content.dropboxapi.com/2/files/download" method="post">
-      <input type="hidden" name="authorization-header" value="<%= @authorizationHeader %>">
-      <ul>
-        <%= for ebook <- @ebooks do %>
-          <li>
-            <button type="submit" name="download" value='<%= ebook["id"] %>'><%= ebook["name"] %></button>
-          </li>
-        <% end %>
-      </ul>
-    </form>
+      <%= for ebook <- @ebooks do %>
+        <form
+          method="POST"
+          enctype="text/plain"
+          action='https://content.dropboxapi.com/2/files/download?arg=<%= ebook["encoded_download_arg"] %>&authorization=<%= @authorizationHeader %>'
+        >
+          <button type="submit"><%= ebook["name"] %></button>
+        </form>
+      <% end %>
   </article>
 </section>
 
-<script>
-  $(document).ready(function() {
-    $("#download-form").on("submit", function() {
-      const $form = $(this); //wrap this in jQuery
-
-      const ebookId = $(document.activeElement).val();
-      console.log('requested id: ' + ebookId);
-      const action = $form.attr('action');
-      console.log('the action is: ' + action);
-
-      const data = $form.serializeArray().reduce((acc, {name, value}) => ({...acc, [name]: value}),{});
-      const authorizationHeader = data["authorization-header"]
-      console.log('the auth is: ' + authorizationHeader);
-
-      $.ajax({
-        url: $form.attr('action'),
-        type: $form.attr('method'),
-        data: null,
-        contentType: 'application/json',
-        headers: {
-          "Content-Type": "text/plain",
-          "Authorization": authorizationHeader,
-          "Dropbox-API-Arg": `{"path": "${ebookId}"}`
-        },
-        async: false
-      });
-      return false;
-    });
-  });
-</script>
