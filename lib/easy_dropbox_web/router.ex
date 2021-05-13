@@ -17,7 +17,6 @@ defmodule EasyDropboxWeb.Router do
     pipe_through :browser
 
     get "/", IndexController, :index
-    post "/", IndexController, :download
   end
 
   # Other scopes may use custom stacks.

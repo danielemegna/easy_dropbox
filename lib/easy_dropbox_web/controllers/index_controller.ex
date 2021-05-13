@@ -19,8 +19,4 @@ defmodule EasyDropboxWeb.IndexController do
     end)
   end
 
-  def download(conn, params) do
-    IO.inspect(params)
-    text(conn, "Ok !" <> inspect(params))
-  end
 end

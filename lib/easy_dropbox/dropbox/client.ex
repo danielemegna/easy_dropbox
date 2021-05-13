@@ -8,31 +8,6 @@ defmodule EasyDropbox.Dropbox.Client do
     {ebooks, token}
   end
 
-  def download_ebook(id) do
-    token = refresh_token()
-
-    response = HTTPoison.post!(
-      "https://content.dropboxapi.com/2/files/download",
-      "",
-      [
-        {"Authorization", "Bearer #{token}"},
-        {"Dropbox-API-Arg", "{\"path\": \"#{id}\"}"}
-      ]
-    )
-    |> log_response()
-
-    headers = response.headers
-      |> Enum.filter(fn h ->
-        match?({"Content-Length", _}, h) ||
-        match?({"Content-Type", _}, h)
-      end)
-
-    %{
-      byte_content: response.body,
-      headers: headers
-    }
-  end
-
   defp fetch_ebooks_with(token) do
     HTTPoison.post!(
       "https://api.dropboxapi.com/2/files/list_folder",
