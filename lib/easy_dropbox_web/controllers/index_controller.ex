@@ -7,7 +7,7 @@ defmodule EasyDropboxWeb.IndexController do
     render(
       conn,
       "index.html",
-      ebooks: ebooks |> add_encoded_download_arg(),
+      ebooks: ebooks |> add_encoded_download_arg() |> sort_by_server_modified_date(),
       authorizationHeader: "Bearer #{token}"
     )
   end
@@ -17,6 +17,13 @@ defmodule EasyDropboxWeb.IndexController do
     |> Enum.map(fn e ->
       encoded_download_arg = URI.encode(~s({"path":"#{e["id"]}"}))
       Map.put(e, "encoded_download_arg", encoded_download_arg)
+    end)
+  end
+
+  defp sort_by_server_modified_date(ebooks) do
+    ebooks
+    |> Enum.sort(fn e1, e2 ->
+      DateTime.compare(e1["server_modified"], e2["server_modified"]) != :lt
     end)
   end
 

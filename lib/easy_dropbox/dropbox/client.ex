@@ -41,7 +41,13 @@ defmodule EasyDropbox.Dropbox.Client do
     |> Jason.decode!()
     |> Map.get("entries")
     |> Enum.filter(&(Map.get(&1, ".tag") == "file"))
-    |> Enum.map(&(Map.take(&1, ["id", "name", "path_display"])))
+    |> Enum.map(&(Map.take(&1, ["id", "name", "path_display", "size", "server_modified"])))
+    |> Enum.map(fn entry ->
+      parsed = Map.get(entry, "server_modified")
+        |> Timex.parse!("{ISO:Extended:Z}")
+        |> Timex.to_datetime("Europe/Rome")
+      Map.put(entry, "server_modified", parsed)
+    end)
   end
 
   defp new_token_needed?(nil), do: true
