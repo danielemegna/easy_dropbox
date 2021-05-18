@@ -2,7 +2,8 @@ defmodule EasyDropboxWeb.IndexController do
   use EasyDropboxWeb, :controller
 
   def index(conn, _params) do
-    {ebooks, token} = EasyDropbox.Dropbox.Client.fetch_ebooks()
+    ebooks = EasyDropbox.Dropbox.Client.fetch_ebooks()
+    token = EasyDropbox.Dropbox.Client.valid_token()
     render(
       conn,
       "index.html",

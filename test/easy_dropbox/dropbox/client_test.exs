@@ -3,10 +3,14 @@ defmodule EasyDropbox.Dropbox.ClientTest do
 
   alias EasyDropbox.Dropbox.Client
 
+  setup do
+    Agent.start_link(fn -> nil end, name: :token_repository)
+    :ok
+  end
+
   test "fetch ebooks from folder" do
-    {ebooks, token} = Client.fetch_ebooks()
+    ebooks = Client.fetch_ebooks()
     assert Enum.count(ebooks) > 0
-    assert String.length(token) > 0
   end
 
 end

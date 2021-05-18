@@ -12,9 +12,12 @@ defmodule EasyDropbox.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: EasyDropbox.PubSub},
       # Start the Endpoint (http/https)
-      EasyDropboxWeb.Endpoint
+      EasyDropboxWeb.Endpoint,
       # Start a worker by calling: EasyDropbox.Worker.start_link(arg)
-      # {EasyDropbox.Worker, arg}
+      %{
+        id: :token_repository,
+        start: {Agent, :start_link, [fn -> nil end, [name: :token_repository]]}
+      }
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
