@@ -37,6 +37,25 @@ Run tests
 # mix test
 ```
 
+## Prod notes
+
+Build the docker image
+
+```
+$ docker build -t easy-dropbox .
+```
+
+Docker run script with secret env
+
+```sh
+docker run --rm -d \
+   -p 4000:4000 \
+   -e DROPBOX_APP_KEY=xxxxxxxxxxxxxxx \
+   -e DROPBOX_APP_SECRET=yyyyyyyyyyyyyyy \
+   -e DROPBOX_REFRESHABLE_TOKEN=xxx_yyyyyyyAAAAAAAAAAxxxxxxxxxxxxxxxxxxxx_yyyyyyyyyyyyyyyyyyyyyy \
+   easy-dropbox
+```
+
 ## Dropbox app settings
 
 To create dropbox application and grub key and secret: `https://www.dropbox.com/developers/apps`
