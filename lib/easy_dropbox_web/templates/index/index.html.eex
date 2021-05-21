@@ -6,27 +6,39 @@
 <section class="row">
   <article class="column">
     <h2>Here we are:</h2>
-    <form action="." method="post">
-      <input type="hidden" name="_csrf_token" value="<%= Phoenix.Controller.get_csrf_token() %>">
-      <table>
+    <input type="hidden" name="_csrf_token" value="<%= Phoenix.Controller.get_csrf_token() %>">
+    <table>
+      <tr>
+        <th>name</th>
+        <th>size</th>
+        <th>server modified</th>
+        <th></th>
+      </tr>
+      <%= for ebook <- @ebooks do %>
         <tr>
-          <th>name</th>
-          <th>size</th>
-          <th>server modified</th>
-          <th></th>
+          <td><%= ebook["name"] %></td>
+          <td><%= ebook["size"] %></td>
+          <td><%= Timex.format!(ebook["server_modified"], "{D}-{M}-{YYYY} {h24}:{m}") %></td>
+          <td>
+            <button class="btn-link file-download" value='<%= ebook["id"] %>'>Download</button>
+          </td>
         </tr>
-        <%= for ebook <- @ebooks do %>
-          <tr>
-            <td><%= ebook["name"] %></td>
-            <td><%= ebook["size"] %></td>
-            <td><%= Timex.format!(ebook["server_modified"], "{D}-{M}-{YYYY} {h24}:{m}") %></td>
-            <td>
-              <button class="btn-link" type="submit" name="download" value='<%= ebook["id"] %>'>Download</button>
-            </td>
-          </tr>
-        <% end %>
-      </table>
-    </form>
+      <% end %>
+    </table>
   </article>
 </section>
 
+<script>
+  $(document).ready(function() {
+    $("button.file-download").on("click", function() {
+      const $button = $(this)
+      console.log($button)
+      console.log($button.val())
+      $button.hide()
+      var $link = $("<a>Link</a>");
+      $link.attr("href", "link-here");
+      $button.parent().append($link);   
+      alert('yes')
+    })
+  })
+</script>
