@@ -20,6 +20,7 @@
           <td><%= Timex.format!(ebook["server_modified"], "{D}-{M}-{YYYY} {h24}:{m}") %></td>
           <td>
             <form
+              target="_blank"
               method="POST"
               enctype="text/plain"
               action='https://content.dropboxapi.com/2/files/download?arg=<%= ebook["encoded_download_arg"] %>&authorization=<%= @authorizationHeader %>'
