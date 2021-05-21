@@ -6,31 +6,27 @@
 <section class="row">
   <article class="column">
     <h2>Here we are:</h2>
-    <table>
-      <tr>
-        <th>name</th>
-        <th>size</th>
-        <th>server modified</th>
-        <th></th>
-      </tr>
-      <%= for ebook <- @ebooks do %>
+    <form action="." method="post">
+      <input type="hidden" name="_csrf_token" value="<%= Phoenix.Controller.get_csrf_token() %>">
+      <table>
         <tr>
-          <td><%= ebook["name"] %></td>
-          <td><%= ebook["size"] %></td>
-          <td><%= Timex.format!(ebook["server_modified"], "{D}-{M}-{YYYY} {h24}:{m}") %></td>
-          <td>
-            <form
-              target="_blank"
-              method="POST"
-              enctype="text/plain"
-              action='https://content.dropboxapi.com/2/files/download?arg=<%= ebook["encoded_download_arg"] %>&authorization=<%= @authorizationHeader %>'
-            >
-              <button type="submit">Download</button>
-            </form>
-          </td>
+          <th>name</th>
+          <th>size</th>
+          <th>server modified</th>
+          <th></th>
         </tr>
-      <% end %>
-    </table>
+        <%= for ebook <- @ebooks do %>
+          <tr>
+            <td><%= ebook["name"] %></td>
+            <td><%= ebook["size"] %></td>
+            <td><%= Timex.format!(ebook["server_modified"], "{D}-{M}-{YYYY} {h24}:{m}") %></td>
+            <td>
+              <button class="btn-link" type="submit" name="download" value='<%= ebook["id"] %>'>Download</button>
+            </td>
+          </tr>
+        <% end %>
+      </table>
+    </form>
   </article>
 </section>
 
